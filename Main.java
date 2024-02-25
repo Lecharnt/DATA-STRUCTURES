@@ -1,165 +1,69 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
+import java.util.Scanner;
+public class Main {
 
-public class Main extends JFrame{
-    final int FRAME_WIDTH = 300;//creates the sizing for the gui
-    final int FRAME_HEIGHT = 510;
-
-    public Main(){
-        setSize(FRAME_WIDTH,FRAME_HEIGHT);//sets the size and ends the code when the window is closed
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //sets the color for the bar and creates a panel
-
-        Color line = new Color(158, 143, 82);
-        JPanel titleBar = new JPanel();
-        titleBar.setPreferredSize(new Dimension(FRAME_WIDTH, 30));
-        titleBar.setBackground(line);
-
-        //creates the heading for gui
-        JLabel heading = new JLabel("BigY Store", SwingConstants.CENTER);
-        heading.setFont(new Font("Arial", Font.BOLD, 16));
-        JLabel title = new JLabel("Make your pizza here!!", SwingConstants.CENTER);
-        title.setFont(new Font("Arial", Font.BOLD, 14));
-        JLabel size = new JLabel("--What size do you want--", SwingConstants.CENTER);
-        size.setFont(new Font("Arial", Font.BOLD, 12));
-        JLabel topping = new JLabel("--What toppings do you want--", SwingConstants.CENTER);
-        topping.setFont(new Font("Arial", Font.BOLD, 12));
-
-        //creates check boxes for the pizza sizes
-        JCheckBox small = new JCheckBox("Small ($5)");
-        JCheckBox medium = new JCheckBox("Medium ($10)");
-        JCheckBox large = new JCheckBox("Large ($15)");
-        JCheckBox superSize = new JCheckBox("Super ($20)");
-
-        // creates checkboxes for selecting toppings
-        JCheckBox pepperoni = new JCheckBox("Pepperoni ($0.50)");
-        JCheckBox ham = new JCheckBox("Ham ($0.50)");
-        JCheckBox pineapple = new JCheckBox("Pineapple ($0.50)");
-        JCheckBox bellPepper = new JCheckBox("Bell Pepper ($0.50)");
-        JCheckBox extraCheese = new JCheckBox("Extra Cheese (Free)");
-        JCheckBox sausage = new JCheckBox("Sausage ($0.50)");
-
-        // Create a button for confirming the purchase
-        JButton button = new JButton("Confirm Purchase");
-
-        // Adds action listener to the button
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                int numSize = 0;// Counter for selected pizza sizes,toppings, and the amount of cash for pizza size and toppings
-                int numTop = 0;
-                double sizecash = 0;
-                double topcash = 0;
-                DecimalFormat df = new DecimalFormat("0.00");// Decimal formatter for currency
-
-                String message = "Your order is:\n";//creates a string for items to be added
-
-                if (small.isSelected()) {//detects if the small size is selected and adds the price and adds to the amount to sizes enabled
-                    message += " - Small Pizza ($5)\n";
-                    numSize += 1;
-                    sizecash += 5;
-                }
-                if (medium.isSelected()) {//detects if the medium size is selected and adds the price and adds to the amount to sizes enabled
-                    message += " - Medium Pizza ($10)\n";
-                    numSize += 1;
-                    sizecash += 10;
-                }
-                if (large.isSelected()) {//detects if the large size is selected and adds the price and adds to the amount to sizes enabled
-                    message += " - Large Pizza ($15)\n";
-                    numSize += 1;
-                    sizecash += 15;
-                }
-                if (superSize.isSelected()) {//detects if the superSize size is selected and adds the price and adds to the amount to sizes enabled
-                    message += " - Super Size Pizza ($20)\n";
-                    numSize += 1;
-                    sizecash += 20;
-                }
-
-                message += "Toppings:\n";
-
-                if (pepperoni.isSelected()) {//detects if the pepperoni is selected and adds the price and adds to the amount to topings enabled
-                    message += " - Pepperoni ($0.50)\n";//add item to message list to be added to receipt
-                    numTop += 1;
-                    topcash += .5;
-                }
-                if (ham.isSelected()) {//detects if the ham is selected and adds the price and adds to the amount to topings enabled
-                    message += " - Ham ($0.50)\n";//add item to message list to be added to receipt
-                    numTop += 1;
-                    topcash += .5;
-                }
-                if (pineapple.isSelected()) {//detects if the pineapple is selected and adds the price and adds to the amount to topings enabled
-                    double selfcash = .50;
-                    numTop += 1;
-                    topcash += .5;
-                    if (topcash == 1.5) {//finds out whether three toppings are bought and weather to add the deal
-                        topcash -= .25;
-                        selfcash = .25;
-                    }
-                    message += " - Sausage ($" + df.format(selfcash) + ")\n";//add item to message list to be added to receipt, and it changes depending on weather or not there is a deal
-                }
-                if (bellPepper.isSelected()) {//detects if the bellPepper is selected and adds the price and adds to the amount to topings enabled
-                    double selfcash = .50;
-                    numTop += 1;
-                    topcash += .5;
-                    if (topcash == 1.5) {//finds out whether three toppings are bought and weather to add the deal
-                        topcash -= .25;
-                        selfcash = .25;
-                    }
-                    message += " - Bell Pepper ($" + df.format(selfcash) + ")\n";//add item to message list to be added to receipt, and it changes depending on weather or not there is a deal
-                }
-                if (extraCheese.isSelected()) {//detects if the extraCheese is selected and adds the price and adds to the amount to topings enabled
-                    message += " - Extra Cheese (Free)\n";//add item to message list to be added to receipt
-                    numTop += 1;
-                }
-                if (sausage.isSelected()) {//detects if the sausage is selected and adds the price and adds to the amount to topings enabled
-                    double selfcash = .50;
-                    numTop += 1;
-                    topcash += .5;
-                    if (topcash == 1.5) {//finds out whether three toppings are bought and weather to add the deal
-                        topcash -= .25;
-                        selfcash = .25;
-                    }
-                    message += " - Sausage ($" + df.format(selfcash) + ")\n";//add item to message list to be added to receipt, and it changes depending on weather or not there is a deal
-                }
-                if (numSize != 1) {
-                    JOptionPane.showMessageDialog(null, "You have to have one size selected");//displays the error for the wrong amount of sizes selected
-                }
-                if (numTop > 3) {
-                    JOptionPane.showMessageDialog(null, "You have more than three toppings selected!");//displays the error for the wrong amount of toppings selected
-                }
-                if (numSize == 1 && numTop <= 3) {
-                    double cash = topcash + sizecash;//adds both cash types
-                    message += "Subtotal: $" + df.format(cash) + "\n";//adds the total amount excluding tax
-                    message += "Tax: $" + df.format(cash * 0.0625) + "\n";//adds the total amount of tax
-                    message += "Total: $" + df.format(cash * (1 + 0.0625));//adds the total amount of tax and food
-                    JOptionPane.showMessageDialog(null, message);//displays the receipt
-                }
-            }
-        });
-        JPanel grid = new JPanel();//adds all the components to the gui in a grid format
-        grid.setLayout(new GridLayout(0, 1));
-        grid.add(titleBar);
-        grid.add(heading);
-        grid.add(title);
-        grid.add(size);
-        grid.add(small);
-        grid.add(medium);
-        grid.add(large);
-        grid.add(superSize);
-        grid.add(topping);
-        grid.add(pepperoni);
-        grid.add(ham);
-        grid.add(pineapple);
-        grid.add(bellPepper);
-        grid.add(extraCheese);
-        grid.add(sausage);
-        grid.add(button);
-        getContentPane().add(grid);// Add the grid panel to the content pane
+    public static double distance(double latitude1, double latitude2, double longitude1,
+                                  double longitude2) {
+        double latDistance = Math.toRadians(latitude2 - latitude1);
+        double lonDistance = Math.toRadians(longitude2 - longitude1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(latitude1)) * Math.cos(Math.toRadians(latitude2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = 6378 * c * 0.621371;
+        return Math.sqrt(distance);
     }
-    public static void main(String[] args) {//Makes the gui visible on start
-        Main example = new Main();
-        example.setVisible(true);
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter the latitude and longitude of the first point (in degrees):");
+        System.out.print("Latitude: ");
+        double lat1 = scanner.nextDouble();
+        System.out.print("Longitude: ");
+        double lon1 = scanner.nextDouble();
+
+        System.out.println(" ");
+        System.out.println("Enter the latitude and longitude of the second point (in degrees):");
+        System.out.print("Latitude: ");
+        double lat2 = scanner.nextDouble();
+        System.out.print("Longitude: ");
+        double lon2 = scanner.nextDouble();
+
+        double distance = distance(lat1, lon1, lat2, lon2);
+        double timePlane = distance / 500;
+        double timePlanecom = distance / 480;
+        double timebus = distance / 55;
+        double timecar = distance / 60;
+        double timerail = distance / 80;
+
+        double Co2emissionsPlane = distance * 1.36078;
+        double Co2emissionsPlanecom = distance * 0.299;
+        double Co2emissionsbus = distance * 0.10;
+        double Co2emissionscar = distance * 0.19;
+        double Co2emissionsrail = distance * 0.006;
+
+        System.out.println(" ");
+        System.out.println("Distance between the two points: " + distance + " miles");
+        System.out.println(" ");
+        System.out.println("Time taken to fly between the two points at 500 miles per hour in a private plane: " + timePlane + " hours");
+        System.out.println("Co2 emissions between the two points at 500 miles per hour in a private plane: " + Co2emissionsPlane + " kilograms of Co2 emissions");
+
+        System.out.println(" ");
+        System.out.println("Time taken to fly between the two points at 480 miles per hour in a commercial plane: " + timePlanecom + " hours");
+        System.out.println("Co2 emissions between the two points at 480 miles per hour in a commercial plane: " + Co2emissionsPlanecom + " kilograms of Co2 emissions");
+
+        System.out.println(" ");
+        System.out.println("Time taken to drive between the two points at 55 miles per hour in a bus: " + timebus + " hours");
+        System.out.println("Co2 emissions between the two points at 55 miles per hour in a bus: " + Co2emissionsbus + " kilograms of Co2 emissions");
+
+        System.out.println(" ");
+        System.out.println("Time taken to drive between the two points at 60 miles per hour in a car: " + timecar + " hours");
+        System.out.println("Co2 emissions between the two points at 60 miles per hour in a car: " + Co2emissionscar + " kilograms of Co2 emissions");
+
+        System.out.println(" ");
+        System.out.println("Time taken to ride between the two points at 80 miles per hour on a train " + timerail + " hours");
+        System.out.println("Co2 emissions between the two points at 80 miles per hour on a train: " + Co2emissionsrail + " kilograms of Co2 emissions");
+
+        scanner.close();
     }
 }
